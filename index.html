@@ -1,55 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Repository File Tree</title>
   <style>
-    /* Dark Theme Styling */
     body {
-      background-color: #121212;
-      color: #e0e0e0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 20px;
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      font-family: Consolas, "Courier New", monospace;
+      padding: 20px;
     }
     h1 {
-      color: #ffffff;
+      color: #9cdcfe;
     }
     ul {
-      list-style: none;
+      list-style-type: none;
       padding-left: 20px;
     }
     li {
-      margin: 5px 0;
-      cursor: pointer;
-      user-select: none;
+      margin: 4px 0;
+      line-height: 1.4;
     }
-    .folder::before {
-      content: '📁 ';
-    }
-    .file::before {
-      content: '📄 ';
-    }
-    /* Hidden class for collapsible folders */
-    .hidden {
-      display: none;
-    }
-    /* Optional: Highlight folder on hover */
-    .folder:hover {
-      color: #bb86fc;
+    li:hover {
+      background-color: #333;
     }
   </style>
 </head>
 <body>
   <h1>Repository File Tree</h1>
-  <div id="file-tree">Loading repository file tree...</div>
-
+  <div id="file-tree">Loading file tree...</div>
+  
   <script>
-    // Repository details
+    // Dynamic icon mapping for file types (over 100 file types)
+    const fileTypeIcons = {
+      "html": "🌐",
+      "htm": "🌐",
+      "css": "🎨",
+      "js": "🟨",
+      "jsx": "⚛️",
+      "ts": "🔷",
+      "tsx": "⚛️",
+      "json": "🔧",
+      "xml": "📝",
+      "md": "📝",
+      "py": "🐍",
+      "rb": "💎",
+      "php": "🐘",
+      "java": "☕",
+      "c": "🔵",
+      "cpp": "🟦",
+      "cs": "💻",
+      "go": "🐹",
+      "rs": "🦀",
+      "swift": "🍎",
+      "kt": "🅺",
+      "kts": "🅺",
+      "sh": "🐚",
+      "bat": "⚙️",
+      "ps1": "⚡",
+      "pl": "🐪",
+      "sql": "🗄️",
+      "yml": "🔧",
+      "yaml": "🔧",
+      "ini": "⚙️",
+      "conf": "⚙️",
+      "log": "📄",
+      "txt": "📄",
+      "rtf": "📄",
+      "doc": "📄",
+      "docx": "📄",
+      "ppt": "📊",
+      "pptx": "📊",
+      "xls": "📊",
+      "xlsx": "📊",
+      "csv": "📈",
+      "tsv": "📈",
+      "pdf": "📕",
+      "epub": "📘",
+      "mdown": "📝",
+      "markdown": "📝",
+      "bak": "🗃️",
+      "tmp": "🗃️",
+      "zip": "🗜️",
+      "rar": "🗜️",
+      "7z": "🗜️",
+      "tar": "🗜️",
+      "gz": "🗜️",
+      "iso": "🗜️",
+      "dmg": "🖥️",
+      "exe": "🖥️",
+      "msi": "🖥️",
+      "apk": "📱",
+      "jar": "☕",
+      "war": "☕",
+      "class": "☕",
+      "o": "🔹",
+      "obj": "🔹",
+      "so": "🔹",
+      "dll": "🔹",
+      "deb": "📦",
+      "rpm": "📦",
+      "img": "🖼️",
+      "ico": "🖼️",
+      "png": "🖼️",
+      "jpg": "🖼️",
+      "jpeg": "🖼️",
+      "gif": "🖼️",
+      "bmp": "🖼️",
+      "tiff": "🖼️",
+      "svg": "🖼️",
+      "mp3": "🎵",
+      "wav": "🎵",
+      "flac": "🎵",
+      "ogg": "🎵",
+      "aac": "🎵",
+      "wma": "🎵",
+      "mp4": "🎥",
+      "mkv": "🎥",
+      "avi": "🎥",
+      "mov": "🎥",
+      "wmv": "🎥",
+      "flv": "🎥",
+      "webm": "🎥",
+      "m4v": "🎥",
+      "3gp": "🎥",
+      "3g2": "🎥",
+      "docm": "📄",
+      "dot": "📄",
+      "xlt": "📊",
+      "xla": "📊",
+      "pps": "📊",
+      "key": "📊",
+      "numbers": "📊",
+      "pages": "📄",
+      "cxx": "🔵",
+      "h": "🔵",
+      "hpp": "🔵",
+      "ino": "🔵",
+      "sln": "🛠️",
+      "vb": "📄",
+      "vbs": "📄",
+      "scala": "📜",
+      "r": "📊",
+      "R": "📊",
+      "jl": "🦀",
+      "m": "📐",
+      "mm": "📐",
+      "dart": "🎯",
+      "coffee": "☕",
+      "lock": "🔒",
+      "pem": "🔒",
+      "crt": "🔒",
+      "csr": "🔒",
+      "p12": "🔒",
+      "pfx": "🔒"
+    };
+
+    // Replace these with your GitHub username and repository name.
     const owner = 'ctforion';
     const repo = 'ctforion.github.io';
-    const branch = 'master'; // Change this if your default branch is different
+    const branch = 'main'; // Change to 'master' if applicable
 
-    // GitHub API endpoint to fetch the repository tree recursively
+    // GitHub API URL to get the repository tree recursively.
     const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
 
     // Fetch the repository tree from GitHub
@@ -60,68 +172,54 @@
           const treeData = buildTree(data.tree);
           const treeHTML = renderTree(treeData);
           document.getElementById('file-tree').innerHTML = treeHTML;
-          addToggleEventListeners();
         } else {
-          document.getElementById('file-tree').innerText = "Error: Unable to fetch repository tree.";
+          document.getElementById('file-tree').innerText = "Error loading repository tree.";
         }
       })
       .catch(error => {
-        console.error('Error fetching repository tree:', error);
-        document.getElementById('file-tree').innerText = "Error fetching repository tree.";
+        console.error("Error fetching repository tree:", error);
+        document.getElementById('file-tree').innerText = "Error loading repository tree.";
       });
 
-    // Build a nested tree structure from the flat list provided by GitHub
-    function buildTree(items) {
-      const tree = {};
-      items.forEach(item => {
+    // Build a nested tree structure from the flat list provided by GitHub API
+    function buildTree(list) {
+      const root = {};
+      list.forEach(item => {
         const parts = item.path.split('/');
-        let current = tree;
+        let current = root;
         parts.forEach((part, index) => {
           if (!current[part]) {
-            current[part] = { __meta__: { type: (index === parts.length - 1) ? item.type : 'tree' } };
+            // Mark leaf nodes with the actual type ('blob' for files, 'tree' for directories)
+            current[part] = { __meta__: { type: index === parts.length - 1 ? item.type : 'tree' } };
           }
           current = current[part];
         });
       });
-      return tree;
+      return root;
     }
 
-    // Recursively render the tree as HTML nested lists
+    // Recursively render the tree structure as HTML nested lists with dynamic icons
     function renderTree(tree) {
       let html = '<ul>';
       for (const key in tree) {
         if (key === '__meta__') continue;
-        const node = tree[key];
-        const type = node.__meta__.type;
-        if (type === 'tree') {
-          html += `<li class="folder">${key}`;
-          // Only render children if available
-          if (Object.keys(node).length > 1) {
-            html += renderTree(node);
-          }
-          html += '</li>';
-        } else { // type === 'blob'
-          // For files, you might eventually add a link to view the file online
-          html += `<li class="file">${key}</li>`;
+        const meta = tree[key].__meta__;
+        let icon = "📁"; // Default icon for directories
+        if (meta.type === 'blob') {
+          // Determine file extension and get matching icon
+          const parts = key.split('.');
+          const ext = parts.length > 1 ? parts.pop().toLowerCase() : '';
+          icon = fileTypeIcons[ext] || "📄";
         }
+        html += `<li>${icon} ${key}`;
+        // Recursively render children if it's a directory
+        if (meta.type === 'tree' && Object.keys(tree[key]).length > 1) {
+          html += renderTree(tree[key]);
+        }
+        html += '</li>';
       }
       html += '</ul>';
       return html;
-    }
-
-    // Add click event listeners to folders to toggle visibility of nested lists
-    function addToggleEventListeners() {
-      const folders = document.getElementsByClassName('folder');
-      Array.from(folders).forEach(folder => {
-        folder.addEventListener('click', function(e) {
-          // Prevent clicks from bubbling up to parent folders
-          e.stopPropagation();
-          const childUl = this.querySelector('ul');
-          if (childUl) {
-            childUl.classList.toggle('hidden');
-          }
-        });
-      });
     }
   </script>
 </body>
