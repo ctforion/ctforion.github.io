@@ -1,40 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <title>Repository File Tree</title>
   <style>
+    /* Dark Theme Styling */
     body {
-      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      color: #ffffff;
     }
     ul {
-      list-style-type: none;
+      list-style: none;
       padding-left: 20px;
     }
     li {
-      margin: 4px 0;
-      line-height: 1.4;
+      margin: 5px 0;
+      cursor: pointer;
+      user-select: none;
     }
-    li::before {
-      content: "•";
-      color: #555;
-      display: inline-block; 
-      width: 1em;
-      margin-left: -1em;
+    .folder::before {
+      content: '📁 ';
+    }
+    .file::before {
+      content: '📄 ';
+    }
+    /* Hidden class for collapsible folders */
+    .hidden {
+      display: none;
+    }
+    /* Optional: Highlight folder on hover */
+    .folder:hover {
+      color: #bb86fc;
     }
   </style>
 </head>
 <body>
   <h1>Repository File Tree</h1>
-  <div id="file-tree">Loading file tree...</div>
-  
-  <script>
-    // Replace these with your GitHub username and repository name.
-    const owner = 'YOUR_GITHUB_USERNAME';
-    const repo = 'YOUR_REPOSITORY_NAME';
-    const branch = 'main'; // Change to 'master' if applicable
+  <div id="file-tree">Loading repository file tree...</div>
 
-    // GitHub API URL to get the repository tree recursively.
+  <script>
+    // Repository details
+    const owner = 'ctforion';
+    const repo = 'ctforion.github.io';
+    const branch = 'master'; // Change this if your default branch is different
+
+    // GitHub API endpoint to fetch the repository tree recursively
     const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
 
     // Fetch the repository tree from GitHub
@@ -45,48 +60,68 @@
           const treeData = buildTree(data.tree);
           const treeHTML = renderTree(treeData);
           document.getElementById('file-tree').innerHTML = treeHTML;
+          addToggleEventListeners();
         } else {
-          document.getElementById('file-tree').innerText = "Error loading repository tree.";
+          document.getElementById('file-tree').innerText = "Error: Unable to fetch repository tree.";
         }
       })
       .catch(error => {
-        console.error("Error fetching repository tree:", error);
-        document.getElementById('file-tree').innerText = "Error loading repository tree.";
+        console.error('Error fetching repository tree:', error);
+        document.getElementById('file-tree').innerText = "Error fetching repository tree.";
       });
 
-    // Build a nested tree structure from the flat list provided by GitHub API
-    function buildTree(list) {
-      const root = {};
-      list.forEach(item => {
+    // Build a nested tree structure from the flat list provided by GitHub
+    function buildTree(items) {
+      const tree = {};
+      items.forEach(item => {
         const parts = item.path.split('/');
-        let current = root;
+        let current = tree;
         parts.forEach((part, index) => {
-          // Create node if it does not exist
           if (!current[part]) {
-            // Mark leaf nodes with the actual type from GitHub ('blob' for files, 'tree' for directories)
-            current[part] = { __meta__: { type: index === parts.length - 1 ? item.type : 'tree' } };
+            current[part] = { __meta__: { type: (index === parts.length - 1) ? item.type : 'tree' } };
           }
           current = current[part];
         });
       });
-      return root;
+      return tree;
     }
 
-    // Recursively render the tree structure as HTML nested lists
+    // Recursively render the tree as HTML nested lists
     function renderTree(tree) {
       let html = '<ul>';
       for (const key in tree) {
         if (key === '__meta__') continue;
-        const meta = tree[key].__meta__;
-        html += `<li>${key}`;
-        // Only render children if this node is a directory and has more than just metadata
-        if (meta.type === 'tree' && Object.keys(tree[key]).length > 1) {
-          html += renderTree(tree[key]);
+        const node = tree[key];
+        const type = node.__meta__.type;
+        if (type === 'tree') {
+          html += `<li class="folder">${key}`;
+          // Only render children if available
+          if (Object.keys(node).length > 1) {
+            html += renderTree(node);
+          }
+          html += '</li>';
+        } else { // type === 'blob'
+          // For files, you might eventually add a link to view the file online
+          html += `<li class="file">${key}</li>`;
         }
-        html += '</li>';
       }
       html += '</ul>';
       return html;
+    }
+
+    // Add click event listeners to folders to toggle visibility of nested lists
+    function addToggleEventListeners() {
+      const folders = document.getElementsByClassName('folder');
+      Array.from(folders).forEach(folder => {
+        folder.addEventListener('click', function(e) {
+          // Prevent clicks from bubbling up to parent folders
+          e.stopPropagation();
+          const childUl = this.querySelector('ul');
+          if (childUl) {
+            childUl.classList.toggle('hidden');
+          }
+        });
+      });
     }
   </script>
 </body>
