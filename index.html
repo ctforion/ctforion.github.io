@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Repository File Tree</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 20px;
+    }
+    li {
+      margin: 4px 0;
+      line-height: 1.4;
+    }
+    li::before {
+      content: "•";
+      color: #555;
+      display: inline-block; 
+      width: 1em;
+      margin-left: -1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Repository File Tree</h1>
+  <div id="file-tree">Loading file tree...</div>
+  
+  <script>
+    // Replace these with your GitHub username and repository name.
+    const owner = 'YOUR_GITHUB_USERNAME';
+    const repo = 'YOUR_REPOSITORY_NAME';
+    const branch = 'main'; // Change to 'master' if applicable
+
+    // GitHub API URL to get the repository tree recursively.
+    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
+
+    // Fetch the repository tree from GitHub
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        if (data.tree) {
+          const treeData = buildTree(data.tree);
+          const treeHTML = renderTree(treeData);
+          document.getElementById('file-tree').innerHTML = treeHTML;
+        } else {
+          document.getElementById('file-tree').innerText = "Error loading repository tree.";
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching repository tree:", error);
+        document.getElementById('file-tree').innerText = "Error loading repository tree.";
+      });
+
+    // Build a nested tree structure from the flat list provided by GitHub API
+    function buildTree(list) {
+      const root = {};
+      list.forEach(item => {
+        const parts = item.path.split('/');
+        let current = root;
+        parts.forEach((part, index) => {
+          // Create node if it does not exist
+          if (!current[part]) {
+            // Mark leaf nodes with the actual type from GitHub ('blob' for files, 'tree' for directories)
+            current[part] = { __meta__: { type: index === parts.length - 1 ? item.type : 'tree' } };
+          }
+          current = current[part];
+        });
+      });
+      return root;
+    }
+
+    // Recursively render the tree structure as HTML nested lists
+    function renderTree(tree) {
+      let html = '<ul>';
+      for (const key in tree) {
+        if (key === '__meta__') continue;
+        const meta = tree[key].__meta__;
+        html += `<li>${key}`;
+        // Only render children if this node is a directory and has more than just metadata
+        if (meta.type === 'tree' && Object.keys(tree[key]).length > 1) {
+          html += renderTree(tree[key]);
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+      return html;
+    }
+  </script>
+</body>
+</html>
