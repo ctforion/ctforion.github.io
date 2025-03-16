@@ -220,48 +220,6 @@ function initializeErrorTracking() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function trackDeviceOrientationAndMotion() {
-//     window.addEventListener('deviceorientation', (event) => {
-//         sendActivity('do', {
-//             oX: event.alpha,
-//             oY: event.beta,
-//             oZ: event.gamma,
-//         });
-//     });
-//     window.addEventListener('devicemotion', (event) => {
-//         sendActivity('dm', {
-//             aX: event.acceleration.x,
-//             aY: event.acceleration.y,
-//             aZ: event.acceleration.z,
-//             rA: event.rotationRate.alpha,
-//             rB: event.rotationRate.beta,
-//             rG: event.rotationRate.gamma,
-//         });
-//     });
-// }
-
-
-
-
 // Function to initialize device orientation tracking
 function trackDeviceOrientationAndMotion() {
     if (window.DeviceOrientationEvent) {
@@ -272,11 +230,11 @@ function trackDeviceOrientationAndMotion() {
                 gamma: event.gamma, // Tilt left-to-right
                 timestamp: Date.now()
             };
-            sendActivity("device_orientation", orientationData);
+            sendActivity("do", orientationData);
         });
-        console.log("Device Orientation tracking started.");
+        // console.log("Device Orientation tracking started.");
     } else {
-        console.warn("Device Orientation API not supported.");
+        // console.warn("Device Orientation API not supported.");
     }
 
     if (window.DeviceMotionEvent) {
@@ -300,11 +258,11 @@ function trackDeviceOrientationAndMotion() {
                 interval: event.interval, // Time in ms between sensor updates
                 timestamp: Date.now()
             };
-            sendActivity("device_motion", motionData);
+            sendActivity("dm", motionData);
         });
-        console.log("Device Motion tracking started.");
+        // console.log("Device Motion tracking started.");
     } else {
-        console.warn("Device Motion API not supported.");
+        // console.warn("Device Motion API not supported.");
     }
 }
 
@@ -2959,7 +2917,7 @@ function initializeTracking() {
     }
     function hashListOfStringSHA256(strings) {
         if (!Array.isArray(strings)) {
-            console.warn("Input should be an array of strings.");
+            // console.warn("Input should be an array of strings.");
             return Promise.resolve('input-not-an-array');
         }
         const combinedString = strings.join('|');
