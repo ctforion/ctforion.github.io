@@ -141,7 +141,7 @@ const sendPostRequest = (type, data, endpoint, useCSRF, context, useBeacon) => {
         pId : pageId,
         uId : userId,
         t   : type,
-        T   : timestamp,
+        // T   : timestamp,
         D   : data,
         T: Date.now(),
     });
