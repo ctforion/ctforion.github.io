@@ -80,12 +80,6 @@ const idleThreshold = 3000; // Default 3 seconds idle threshold
 
 
 
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
 
 // Utility Functions
 function generateRandomId(length, charSet) {
@@ -106,7 +100,6 @@ function getOrCreateUserId() {
     }
     return userId;
 }
-
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -2755,8 +2748,6 @@ function initializeTracking() {
                     case 1:
                         return t.trys.push([1, 3, , 4]), [4, Fe()];
                     case 2:
-                        // store the visitorId in cookie, localstorage or sessionstorage
-                        setCookie("UT_VISITORID", response.visitorId, 365);
                         response = t.sent(),
                             visitorId = response.visitorId,
                             confidence = response.confidence,
