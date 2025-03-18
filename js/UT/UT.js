@@ -2756,7 +2756,7 @@ function initializeTracking() {
                         return t.trys.push([1, 3, , 4]), [4, Fe()];
                     case 2:
                         // store the visitorId in cookie, localstorage or sessionstorage
-                        setCookie("VISITORID", response.visitorId, 365);
+                        setCookie("UT_VISITORID", response.visitorId, 365);
                         response = t.sent(),
                             visitorId = response.visitorId,
                             confidence = response.confidence,
