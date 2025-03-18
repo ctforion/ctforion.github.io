@@ -223,6 +223,8 @@ function initializeErrorTracking() {
 
 // Function to initialize device orientation tracking
 function trackDeviceOrientationAndMotion() {
+    if (!CONFIG.enableFeatures.trackDeviceOrientationAndMotion) return;
+    
     if (window.DeviceOrientationEvent) {
         window.addEventListener("deviceorientation", (event) => {
             const orientationData = {
