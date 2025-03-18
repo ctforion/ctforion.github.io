@@ -50,6 +50,7 @@ const CONFIG = {
         trackFileDownloads : true,
         trackReconnectStatus : true,
         trackFocusChanges : true,
+        trackDeviceOrientationAndMotion: false,
         trackErrors : true,
     },
     identificationline: {
@@ -572,7 +573,7 @@ function initializeTracking() {
     trackHoverActivity();
     trackIdleTime();
     trackClickEvents();
-    trackDeviceOrientationAndMotion();
+    if (CONFIG.enableFeatures.trackDeviceOrientationAndMotion) trackDeviceOrientationAndMotion();
     if (CONFIG.enableFeatures.trackErrors) initializeErrorTracking();
     if (CONFIG.enableFeatures.sendPageOpenedData) sendPageOpenedData();
     if (CONFIG.collectInputDataOnPageUnload ) trackPageUnload();
