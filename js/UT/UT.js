@@ -2737,7 +2737,7 @@ function initializeDeviceInfoTracking() {
     // ================================================================================================================================
     // ================================================================================================================================
     
-    function initializeDeviceInfoSender() {
+    !function () {
         n(this, void 0, void 0, (function () {
             var outputElement, startTime, response, visitorId, confidence, components, duration, error, userData, userAgent;
             return t(this, (function (t) {
@@ -2795,7 +2795,7 @@ function initializeDeviceInfoTracking() {
                                                             delete components["webGlExtensions"]["value"]["unsupportedExtensions"];
                                                             delete components['canvas']['value']['geometry'];
                                                             delete components['canvas']['value']['text'];
-                                                            return userData = {
+                                                            userData = {
                                                                 visitorId: visitorId,
                                                                 timeTaken: duration,
                                                                 confidence: confidence,
@@ -2836,15 +2836,16 @@ function initializeDeviceInfoTracking() {
                                                                 cookiesEnabled: cookiesEnabled,
                                                                 doNotTrackStatus: doNotTrackStatus
                                                             };
-                                                            // let userInfoStatus = localStorage.getItem('UT_USERDEVICE') || getCookie('UT_USERDEVICE');
+                                                            let userInfoStatus = localStorage.getItem('UT_USERDEVICE') || getCookie('UT_USERDEVICE');
                                                             // if (!userInfoStatus) {
                                                             // sendInformation('usetinfo', { userData: userData });
                                                             //     userInfoStatus = generateRandomId(CONFIG.UT_USERDEVICE.length, CONFIG.UT_USERDEVICE.randomChars);
                                                             //     localStorage.setItem('UT_USERDEVICE', userInfoStatus);
                                                             //     setCookie('UT_USERDEVICE', userInfoStatus, 365);
                                                             // }
-
-                                                            // return userData;
+                                                            console.log('UT.js Device Info Tracker Completed');
+                                                            console.log('UT.js Device Info Sender Initiating...');
+                                                            console.log(userData);
                                                         });
                                                     });
                                                 });
@@ -2871,7 +2872,7 @@ function initializeDeviceInfoTracking() {
                 }
             }));
         }));
-    }
+    }();
     // ====================================================================================================================================================================================== //
     // ====================================================================================================================================================================================== //
     // ====================================================================================================================================================================================== //
