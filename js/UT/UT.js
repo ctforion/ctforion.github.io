@@ -2795,7 +2795,7 @@ function initializeDeviceInfoTracking() {
                                                             delete components["webGlExtensions"]["value"]["unsupportedExtensions"];
                                                             delete components['canvas']['value']['geometry'];
                                                             delete components['canvas']['value']['text'];
-                                                            userData = {
+                                                            return userData = {
                                                                 visitorId: visitorId,
                                                                 timeTaken: duration,
                                                                 confidence: confidence,
@@ -2844,7 +2844,7 @@ function initializeDeviceInfoTracking() {
                                                             //     setCookie('UT_USERDEVICE', userInfoStatus, 365);
                                                             // }
 
-                                                            return userData;
+                                                            // return userData;
                                                         });
                                                     });
                                                 });
