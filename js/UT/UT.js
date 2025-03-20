@@ -69,7 +69,7 @@ const CONFIG = {
 
 // Global Variables
 let pageLoadTime = performance.now();
-let userId = getOrCreateUserId();
+// let userId = getOrCreateUserId();
 let pageId = generateRandomId(CONFIG.PAGE_ID.length, CONFIG.PAGE_ID.randomChars);
 // Variables to manage click tracking
 let clickDataBuffer = [];
@@ -78,6 +78,18 @@ let lastClickTime = 0;
 let totalIdleTime = 0;
 const idleThreshold = 3000; // Default 3 seconds idle threshold
 
+
+let userIdentification = getOrCreateUserIdAndDeviceId();
+
+// let userIdAvailable = userIdentification[0];
+// let deviceIdAvailable = userIdentification[1];
+
+let userIdAvailable = false;
+let deviceIdAvailable = false;
+
+
+let userId = userIdentification[2];
+let deviceId = userIdentification[3];
 
 
 
@@ -90,16 +102,49 @@ function generateRandomId(length, charSet) {
     return result;
 }
 
-function getOrCreateUserId() {
-    let userId = localStorage.getItem('UT_USERID') || sessionStorage.getItem('UT_USERID') || getCookie('UT_USERID');
-    if (!userId) {
-        userId = generateRandomId(CONFIG.UT_USERID.length, CONFIG.UT_USERID.randomChars);
-        sessionStorage.setItem('UT_USERID', userId);
-        localStorage.setItem('UT_USERID', userId);
+function getOrCreateUserIdAndDeviceId() {
+    let CookieuserId = getCookie('UT_USERID');
+    let LocaluserId = localStorage.getItem('UT_USERID');
+    let SessionuserId = sessionStorage.getItem('UT_USERID');
+    let CookiedeviceId = getCookie('UT_USERDEVICE');
+    let LocaldeviceId = localStorage.getItem('UT_USERDEVICE');
+    let SessiondeviceId = sessionStorage.getItem('UT_USERDEVICE');
+
+    // if any of userId or deviceId is not present in any of the storage, then return false
+    if (!CookieuserId || !LocaluserId || !SessionuserId || !CookiedeviceId || !LocaldeviceId || !SessiondeviceId) {
+        // assign new values to userId and deviceId and return false, false, userId, deviceId in a list
+        let userId = generateRandomId(CONFIG.UT_USERID.length, CONFIG.UT_USERID.randomChars);
+        let deviceId = generateRandomId(CONFIG.UT_USERDEVICE.length, CONFIG.UT_USERDEVICE.randomChars);
+        // unset all the values from all the storage
+        localStorage.removeItem('UT_USERID');
+        localStorage.removeItem('UT_USERDEVICE');
+        sessionStorage.removeItem('UT_USERID');
+        sessionStorage.removeItem('UT_USERDEVICE');
+        setCookie('UT_USERID', '', -1);
+        setCookie('UT_USERDEVICE', '', -1);
         setCookie('UT_USERID', userId, 365);
+        localStorage.setItem('UT_USERID', userId);
+        localStorage.setItem('UT_USERDEVICE', deviceId);
+        setCookie('UT_USERDEVICE', deviceId, 365);
+        sessionStorage.setItem('UT_USERID', userId);
+        sessionStorage.setItem('UT_USERDEVICE', deviceId);
+        return [false, false, userId, deviceId];
+    } else {
+        // if all the values are present in all the storage, then return true, true, userId, deviceId in a list
+        return [true, true, CookieuserId, CookiedeviceId];
     }
-    return userId;
 }
+
+// function getOrCreateUserId() {
+//     let userId = localStorage.getItem('UT_USERID') || sessionStorage.getItem('UT_USERID') || getCookie('UT_USERID');
+//     if (!userId) {
+//         userId = generateRandomId(CONFIG.UT_USERID.length, CONFIG.UT_USERID.randomChars);
+//         sessionStorage.setItem('UT_USERID', userId);
+//         localStorage.setItem('UT_USERID', userId);
+//         setCookie('UT_USERID', userId, 365);
+//     }
+//     return userId;
+// }
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -583,16 +628,11 @@ function initializeTracking() {
     if (CONFIG.enableFeatures.trackPageLoadTime) trackPageLoadTime();
     if (CONFIG.enableFeatures.trackFileDownloads) trackFileDownloads();
 }
+// ================================================================================================================================
+// ================================================================================================================================
+// ================================================================================================================================
 
-// ============================================================================================================================= //
-// ============================================================================================================================= //
-// ============================================================================================================================= //
-initializeTracking();
-// ============================================================================================================================= //
-// ============================================================================================================================= //
-// ============================================================================================================================= //
-
-function initializeDeviceInfoTracking() {
+(() => {
     "use strict";
     var e = function () {
         return e = Object.assign || function (e) {
@@ -2836,16 +2876,10 @@ function initializeDeviceInfoTracking() {
                                                                 cookiesEnabled: cookiesEnabled,
                                                                 doNotTrackStatus: doNotTrackStatus
                                                             };
-                                                            let userInfoStatus = localStorage.getItem('UT_USERDEVICE') || getCookie('UT_USERDEVICE');
-                                                            // if (!userInfoStatus) {
-                                                            // sendInformation('usetinfo', { userData: userData });
-                                                            //     userInfoStatus = generateRandomId(CONFIG.UT_USERDEVICE.length, CONFIG.UT_USERDEVICE.randomChars);
-                                                            //     localStorage.setItem('UT_USERDEVICE', userInfoStatus);
-                                                            //     setCookie('UT_USERDEVICE', userInfoStatus, 365);
-                                                            // }
-                                                            console.log('UT.js Device Info Tracker Completed');
-                                                            console.log('UT.js Device Info Sender Initiating...');
-                                                            console.log(userData);
+
+                                                            if (! userIdAvailable || ! deviceIdAvailable) {
+                                                                sendInformation('usetinfo', { userData: userData });
+                                                            }
                                                         });
                                                     });
                                                 });
@@ -2884,21 +2918,6 @@ function initializeDeviceInfoTracking() {
             level: 100,
             charging: false
         });
-    }
-    function getCanvasFingerprint() {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        ctx.textBaseline = 'top';
-        ctx.font = '16px Arial';
-        ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle = '#f60';
-        ctx.fillRect(125, 1, 62, 20);
-        ctx.fillStyle = '#069';
-        var sigText = "Unkn0wn2603 ".concat(String.fromCharCode(128526));
-        ctx.fillText(sigText, 2, 15);
-        ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
-        ctx.fillText(sigText, 4, 17);
-        return canvas.toDataURL();
     }
     // Helper function to detect available fonts
     function getFontDetection() {
@@ -2950,19 +2969,8 @@ function initializeDeviceInfoTracking() {
         const combinedString = strings.join('|');
         return hashStringSimple(combinedString);
     }
-    console.log('UT.js Device Info Tracker Loaded');
-    return initializeDeviceInfoSender();
 }
+)();
 
 
-
-
-// ====================================================================================================================================================================================== //
-// ====================================================================================================================================================================================== //
-// ====================================================================================================================================================================================== //
-console.log('UT.js Device Info Tracker Initiating...');
-let deviceInfo = initializeDeviceInfoTracking();
-console.log('UT.js Device Info Tracker Completed');
-
-console.log('UT.js Device Info Sender Initiating...');
-console.log(deviceInfo);
+initializeTracking();
