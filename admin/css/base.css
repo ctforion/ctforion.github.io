@@ -3,51 +3,50 @@
 */
 
 /* VARIABLE DEFINITIONS */
-html[data-theme="dark"],
-:root {
-    --primary: #79aec8;
-    --secondary: #417690;
-    --accent: #f5dd5d;
+html[data-theme="light"],
+:root {    --primary: #00ffdd;
+    --secondary: #009c8a;
+    --accent: #00e6cc;
     --primary-fg: #fff;
 
-    --body-fg: #333;
-    --body-bg: #fff;
-    --body-quiet-color: #666;
+    --body-fg: #222;
+    --body-bg: #f0fffc;
+    --body-quiet-color: #555;
     --body-loud-color: #000;
 
-    --header-color: #ffc;
+    --header-color: #ccfffc;
     --header-branding-color: var(--accent);
     --header-bg: var(--secondary);
     --header-link-color: var(--primary-fg);
 
-    --breadcrumbs-fg: #c4dce8;
+    --breadcrumbs-fg: #a3fff3;
     --breadcrumbs-link-fg: var(--body-bg);
-    --breadcrumbs-bg: #264b5d;
+    --breadcrumbs-bg: #007a68;
 
-    --link-fg: #417893;
-    --link-hover-color: #036;
+    --link-fg: #009c8a;
+    --link-hover-color: #007060;
     --link-selected-fg: var(--secondary);
 
-    --hairline-color: #e8e8e8;
-    --border-color: #ccc;
+    --hairline-color: #ccece6;
+    --border-color: #88ccc0;
 
     --error-fg: #ba2121;
 
-    --message-success-bg: #dfd;
-    --message-warning-bg: #ffc;
-    --message-error-bg: #ffefef;
+    --message-success-bg: #ccffee;
+    --message-warning-bg: #e6ffcc;
+    --message-error-bg: #ffcccc;
 
-    --darkened-bg: #f8f8f8; /* A bit darker than --body-bg */
-    --selected-bg: #e4e4e4; /* E.g. selected table cells */
-    --selected-row: #ffc;
+    --darkened-bg: #e6fffa; /* A bit darker than --body-bg */
+    --selected-bg: #b3fff3; /* E.g. selected table cells */
+    --selected-row: #ccffee;
 
     --button-fg: #fff;
     --button-bg: var(--secondary);
-    --button-hover-bg: #205067;
-    --default-button-bg: #205067;
+    --button-hover-bg: #007060;
+    --default-button-bg: #007060;
     --default-button-hover-bg: var(--secondary);
-    --close-button-bg: #747474;
-    --close-button-hover-bg: #333;
+    --close-button-bg: #558c88;
+    --close-button-hover-bg: #00443e;
     --delete-button-bg: #ba2121;
     --delete-button-hover-bg: #a41515;
 
