@@ -33,7 +33,7 @@
   }
 
 
-html[data-theme="dark"] {
+html[data-theme="light"] {
     --primary: #264b5d;
     --primary-fg: #f7f7f7;
 
