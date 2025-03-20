@@ -4,7 +4,63 @@
 
 /* VARIABLE DEFINITIONS */
 html[data-theme="light"],
-:root {    --primary: #00ffdd;
+:root {
+
+    /* Dark Mode Theme with #00FFDD accents */
+    --primary: #00ffdd;
+    --secondary: #008f7c;
+    --accent: #00e6cc;
+    --primary-fg: #ffffff;
+
+    --body-fg: #d0d0d0;
+    --body-bg: #121212;
+    --body-quiet-color: #aaaaaa;
+    --body-loud-color: #ffffff;
+
+    --header-color: #00e6cc;
+    --header-branding-color: var(--accent);
+    --header-bg: var(--secondary);
+    --header-link-color: var(--primary-fg);
+
+    --breadcrumbs-fg: #00c8b4;
+    --breadcrumbs-link-fg: var(--body-bg);
+    --breadcrumbs-bg: #006a5a;
+
+    --link-fg: #00ffdd;
+    --link-hover-color: #00c8b4;
+    --link-selected-fg: var(--secondary);
+
+    --hairline-color: #444;
+    --border-color: #007a68;
+
+    --error-fg: #ff6b6b;
+
+    --message-success-bg: #004d42;
+    --message-warning-bg: #665c00;
+    --message-error-bg: #550000;
+
+    --darkened-bg: #1e1e1e; /* Darker than --body-bg */
+    --selected-bg: #004d42; /* Highlighted elements */
+    --selected-row: #006a5a;
+
+    --button-fg: #ffffff;
+    --button-bg: var(--secondary);
+    --button-hover-bg: #00574d;
+    --default-button-bg: #00574d;
+    --default-button-hover-bg: var(--secondary);
+    --close-button-bg: #333;
+    --close-button-hover-bg: #111;
+    --delete-button-bg: #ff4444;
+    --delete-button-hover-bg: #cc0000;
+
+
+    /*
+
+
+
+
+    
+    --primary: #00ffdd;
     --secondary: #009c8a;
     --accent: #00e6cc;
     --primary-fg: #fff;
@@ -36,8 +92,8 @@ html[data-theme="light"],
     --message-warning-bg: #e6ffcc;
     --message-error-bg: #ffcccc;
 
-    --darkened-bg: #e6fffa; /* A bit darker than --body-bg */
-    --selected-bg: #b3fff3; /* E.g. selected table cells */
+    --darkened-bg: #e6fffa;
+    --selected-bg: #b3fff3;
     --selected-row: #ccffee;
 
     --button-fg: #fff;
@@ -49,6 +105,61 @@ html[data-theme="light"],
     --close-button-hover-bg: #00443e;
     --delete-button-bg: #ba2121;
     --delete-button-hover-bg: #a41515;
+
+
+
+
+
+
+
+
+    --primary: #79aec8;
+    --secondary: #417690;
+    --accent: #f5dd5d;
+    --primary-fg: #fff;
+
+    --body-fg: #333;
+    --body-bg: #fff;
+    --body-quiet-color: #666;
+    --body-loud-color: #000;
+
+    --header-color: #ffc;
+    --header-branding-color: var(--accent);
+    --header-bg: var(--secondary);
+    --header-link-color: var(--primary-fg);
+
+    --breadcrumbs-fg: #c4dce8;
+    --breadcrumbs-link-fg: var(--body-bg);
+    --breadcrumbs-bg: #264b5d;
+
+    --link-fg: #417893;
+    --link-hover-color: #036;
+    --link-selected-fg: var(--secondary);
+
+    --hairline-color: #e8e8e8;
+    --border-color: #ccc;
+
+    --error-fg: #ba2121;
+
+    --message-success-bg: #dfd;
+    --message-warning-bg: #ffc;
+    --message-error-bg: #ffefef;
+
+    --darkened-bg: #f8f8f8;
+    --selected-bg: #e4e4e4; 
+    --selected-row: #ffc;
+
+    --button-fg: #fff;
+    --button-bg: var(--secondary);
+    --button-hover-bg: #205067;
+    --default-button-bg: #205067;
+    --default-button-hover-bg: var(--secondary);
+    --close-button-bg: #747474;
+    --close-button-hover-bg: #333;
+    --delete-button-bg: #ba2121;
+    --delete-button-hover-bg: #a41515;
+
+    */
 
     --object-tools-fg: var(--button-fg);
     --object-tools-bg: var(--close-button-bg);
