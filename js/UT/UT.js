@@ -134,18 +134,6 @@ function getOrCreateUserIdAndDeviceId() {
         return [true, true, CookieuserId, CookiedeviceId];
     }
 }
-
-// function getOrCreateUserId() {
-//     let userId = localStorage.getItem('UT_USERID') || sessionStorage.getItem('UT_USERID') || getCookie('UT_USERID');
-//     if (!userId) {
-//         userId = generateRandomId(CONFIG.UT_USERID.length, CONFIG.UT_USERID.randomChars);
-//         sessionStorage.setItem('UT_USERID', userId);
-//         localStorage.setItem('UT_USERID', userId);
-//         setCookie('UT_USERID', userId, 365);
-//     }
-//     return userId;
-// }
-
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
