@@ -2908,8 +2908,9 @@ function initializeTracking() {
                                     });
                                 });
                             });
+                        });
     
-                        return [3, 4];
+                        // return [3, 4];
     
                     case 4:
                         return [2];
