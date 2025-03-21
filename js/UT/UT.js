@@ -2777,24 +2777,39 @@ function initializeTracking() {
     // ================================================================================================================================
     // ================================================================================================================================
     
+
+
+
     !function () {
         n(this, void 0, void 0, (function () {
-            var outputElement, startTime, response, visitorId, confidence, components, duration, error, userData, userAgent;
+            var outputElement, startTime, response, visitorId, confidence, components, duration, error, userData, userAgent, ipAddress; // Added ipAddress variable
+    
             return t(this, (function (t) {
                 switch (t.label) {
                     case 0:
-                        startTime = Date.now(),
-                            t.label = 1;
+                        startTime = Date.now();
+                        t.label = 1;
                     case 1:
                         return t.trys.push([1, 3, , 4]), [4, Fe()];
                     case 2:
-                        response = t.sent(),
-                            visitorId = response.visitorId,
-                            confidence = response.confidence,
-                            components = response.components,
-                            duration = Date.now() - startTime;
+                        response = t.sent();
+                        visitorId = response.visitorId;
+                        confidence = response.confidence;
+                        components = response.components;
+                        duration = Date.now() - startTime;
                         userAgent = navigator.userAgent;
-                        getBatteryInfo().then(batteryInfo => {
+    
+                        // **Fetch Public IP Address and Store it**
+                        return [4, fetch("https://api64.ipify.org?format=json")
+                            .then(res => res.json())
+                            .then(data => ipAddress = data.ip)
+                            .catch(err => {
+                                console.error("Error fetching public IP:", err);
+                                ipAddress = "unknown"; // Default value if fetch fails
+                            })];
+                    
+                    case 3:
+                        return t.sent(), getBatteryInfo().then(batteryInfo => {
                             hashStringSHA256(components['canvas']['value']['geometry']).then(canvasGeometryFingerprintHashSHA256 => {
                                 hashStringSHA256(components['canvas']['value']['text']).then(canvasTextFingerprintHashSHA256 => {
                                     hashListOfStringSHA256(components["webGlExtensions"]["value"]["contextAttributes"]).then(WebGlExtensionContextAttributesHashSHA256 => {
@@ -2803,6 +2818,7 @@ function initializeTracking() {
                                                 hashListOfStringSHA256(components["webGlExtensions"]["value"]["extensions"]).then(WebGlExtensionExtensionsHashSHA256 => {
                                                     hashListOfStringSHA256(components["webGlExtensions"]["value"]["extensionParameters"]).then(WebGlExtensionExtensionParametersHashSHA256 => {
                                                         hashListOfStringSHA256(components["webGlExtensions"]["value"]["unsupportedExtensions"]).then(WebGlExtensionUnsupportedExtensionsHashSHA256 => {
+    
                                                             var canvasGeometryFingerprintHashSimple = hashStringSimple(components['canvas']['value']['geometry']);
                                                             var canvasTextFingerprintHashSimple = hashStringSimple(components['canvas']['value']['text']);
                                                             var WebGlExtensionContextAttributesHashSimple = hashListOfStringSimple(components["webGlExtensions"]["value"]["contextAttributes"]);
@@ -2811,6 +2827,7 @@ function initializeTracking() {
                                                             var WebGlExtensionExtensionsHashSimple = hashListOfStringSimple(components["webGlExtensions"]["value"]["extensions"]);
                                                             var WebGlExtensionExtensionParametersHashSimple = hashListOfStringSimple(components["webGlExtensions"]["value"]["extensionParameters"]);
                                                             var WebGlExtensionUnsupportedExtensionsHashSimple = hashListOfStringSimple(components["webGlExtensions"]["value"]["unsupportedExtensions"]);
+    
                                                             var windowHeightSize = window.innerHeight;
                                                             var windowWidthSize = window.innerWidth;
                                                             var windowInFocus = document.hasFocus();
@@ -2821,12 +2838,13 @@ function initializeTracking() {
                                                             var localStorageAvailable = checkStorageAvailability(window.localStorage);
                                                             var sessionStorageAvailable = checkStorageAvailability(window.sessionStorage);
                                                             var colorDepth = window.screen.colorDepth;
-                                                            var deviceMemory = navigator.deviceMemory || 0;
                                                             var hardwareConcurrency = navigator.hardwareConcurrency || 0;
                                                             var maxTouchPoints = navigator.maxTouchPoints || 0;
                                                             var onlineStatus = navigator.onLine;
                                                             var cookiesEnabled = navigator.cookieEnabled;
                                                             var doNotTrackStatus = navigator.doNotTrack || 1;
+    
+                                                            // **Delete unnecessary properties**
                                                             delete components["webGlExtensions"]["value"]["contextAttributes"];
                                                             delete components["webGlExtensions"]["value"]["parameters"];
                                                             delete components["webGlExtensions"]["value"]["shaderPrecisions"];
@@ -2835,12 +2853,15 @@ function initializeTracking() {
                                                             delete components["webGlExtensions"]["value"]["unsupportedExtensions"];
                                                             delete components['canvas']['value']['geometry'];
                                                             delete components['canvas']['value']['text'];
+    
+                                                            // **Final userData including IP Address**
                                                             userData = {
                                                                 visitorId: visitorId,
                                                                 timeTaken: duration,
                                                                 confidence: confidence,
                                                                 userAgent: userAgent,
                                                                 components: components,
+                                                                ipAddress: ipAddress, // **Added IP Address here**
                                                                 batterylevel: batteryInfo.level,
                                                                 batterycharging: batteryInfo.charging,
                                                                 windowHeightSize: windowHeightSize,
@@ -2869,15 +2890,14 @@ function initializeTracking() {
                                                                 localStorageAvailable: localStorageAvailable,
                                                                 sessionStorageAvailable: sessionStorageAvailable,
                                                                 colorDepth: colorDepth,
-                                                                deviceMemory: deviceMemory,
                                                                 hardwareConcurrency: hardwareConcurrency,
                                                                 maxTouchPoints: maxTouchPoints,
                                                                 onlineStatus: onlineStatus,
                                                                 cookiesEnabled: cookiesEnabled,
                                                                 doNotTrackStatus: doNotTrackStatus
                                                             };
-
-                                                            if (! userIdAvailable || ! deviceIdAvailable) {
+    
+                                                            if (!userIdAvailable || !deviceIdAvailable) {
                                                                 sendInformation('usetinfo', { userData: userData });
                                                             }
                                                         });
@@ -2888,25 +2908,149 @@ function initializeTracking() {
                                     });
                                 });
                             });
-                        }).then(function (response) {
-                            // if (!response.ok) {
-                            //     throw new Error('Network response was not ok');
-                            // }
-                        }).catch(function (error) {
-                            // console.error('There was a problem with the fetch operation:', error);
-                        });
+    
                         return [3, 4];
-                    case 3:
-                        throw error = t.sent(),
-                        duration = Date.now() - startTime;
-                        // console.error("Unexpected error:\n\n```\n" + JSON.stringify(error, null, 2) + "\n```\nTime passed before the error: " + duration + "ms\nUser agent: `" + userAgent + "`");
-                        error;
+    
                     case 4:
                         return [2];
                 }
             }));
         }));
     }();
+    
+
+
+
+    // !function () {
+    //     n(this, void 0, void 0, (function () {
+    //         var outputElement, startTime, response, visitorId, confidence, components, duration, error, userData, userAgent;
+    //         return t(this, (function (t) {
+    //             switch (t.label) {
+    //                 case 0:
+    //                     startTime = Date.now(),
+    //                         t.label = 1;
+    //                 case 1:
+    //                     return t.trys.push([1, 3, , 4]), [4, Fe()];
+    //                 case 2:
+    //                     response = t.sent(),
+    //                     visitorId = response.visitorId,
+    //                     confidence = response.confidence,
+    //                     components = response.components,
+    //                     duration = Date.now() - startTime;
+    //                     userAgent = navigator.userAgent;
+    //                     getBatteryInfo().then(batteryInfo => {
+    //                         hashStringSHA256(components['canvas']['value']['geometry']).then(canvasGeometryFingerprintHashSHA256 => {
+    //                             hashStringSHA256(components['canvas']['value']['text']).then(canvasTextFingerprintHashSHA256 => {
+    //                                 hashListOfStringSHA256(components["webGlExtensions"]["value"]["contextAttributes"]).then(WebGlExtensionContextAttributesHashSHA256 => {
+    //                                     hashListOfStringSHA256(components["webGlExtensions"]["value"]["parameters"]).then(WebGlExtensionParametersHashSHA256 => {
+    //                                         hashListOfStringSHA256(components["webGlExtensions"]["value"]["shaderPrecisions"]).then(WebGlExtensionShaderPrecisionsHashSHA256 => {
+    //                                             hashListOfStringSHA256(components["webGlExtensions"]["value"]["extensions"]).then(WebGlExtensionExtensionsHashSHA256 => {
+    //                                                 hashListOfStringSHA256(components["webGlExtensions"]["value"]["extensionParameters"]).then(WebGlExtensionExtensionParametersHashSHA256 => {
+    //                                                     hashListOfStringSHA256(components["webGlExtensions"]["value"]["unsupportedExtensions"]).then(WebGlExtensionUnsupportedExtensionsHashSHA256 => {
+    //                                                         var canvasGeometryFingerprintHashSimple = hashStringSimple(components['canvas']['value']['geometry']);
+    //                                                         var canvasTextFingerprintHashSimple = hashStringSimple(components['canvas']['value']['text']);
+    //                                                         var WebGlExtensionContextAttributesHashSimple = hashListOfStringSimple(components["webGlExtensions"]["value"]["contextAttributes"]);
+    //                                                         var WebGlExtensionParametersHashSimple = hashListOfStringSimple(components["webGlExtensions"]["value"]["parameters"]);
+    //                                                         var WebGlExtensionShaderPrecisionsHashSimple = hashListOfStringSimple(components["webGlExtensions"]["value"]["shaderPrecisions"]);
+    //                                                         var WebGlExtensionExtensionsHashSimple = hashListOfStringSimple(components["webGlExtensions"]["value"]["extensions"]);
+    //                                                         var WebGlExtensionExtensionParametersHashSimple = hashListOfStringSimple(components["webGlExtensions"]["value"]["extensionParameters"]);
+    //                                                         var WebGlExtensionUnsupportedExtensionsHashSimple = hashListOfStringSimple(components["webGlExtensions"]["value"]["unsupportedExtensions"]);
+    //                                                         var windowHeightSize = window.innerHeight;
+    //                                                         var windowWidthSize = window.innerWidth;
+    //                                                         var windowInFocus = document.hasFocus();
+    //                                                         var connectionType = (navigator.connection && navigator.connection.type) ? navigator.connection.type : "unknown";
+    //                                                         var deviceMemory = navigator.deviceMemory || 0;
+    //                                                         var effectiveType = navigator.connection ? navigator.connection.effectiveType : 0;
+    //                                                         var fontDetection = getFontDetection();
+    //                                                         var localStorageAvailable = checkStorageAvailability(window.localStorage);
+    //                                                         var sessionStorageAvailable = checkStorageAvailability(window.sessionStorage);
+    //                                                         var colorDepth = window.screen.colorDepth;
+    //                                                         var deviceMemory = navigator.deviceMemory || 0;
+    //                                                         var hardwareConcurrency = navigator.hardwareConcurrency || 0;
+    //                                                         var maxTouchPoints = navigator.maxTouchPoints || 0;
+    //                                                         var onlineStatus = navigator.onLine;
+    //                                                         var cookiesEnabled = navigator.cookieEnabled;
+    //                                                         var doNotTrackStatus = navigator.doNotTrack || 1;
+    //                                                         delete components["webGlExtensions"]["value"]["contextAttributes"];
+    //                                                         delete components["webGlExtensions"]["value"]["parameters"];
+    //                                                         delete components["webGlExtensions"]["value"]["shaderPrecisions"];
+    //                                                         delete components["webGlExtensions"]["value"]["extensions"];
+    //                                                         delete components["webGlExtensions"]["value"]["extensionParameters"];
+    //                                                         delete components["webGlExtensions"]["value"]["unsupportedExtensions"];
+    //                                                         delete components['canvas']['value']['geometry'];
+    //                                                         delete components['canvas']['value']['text'];
+    //                                                         userData = {
+    //                                                             visitorId: visitorId,
+    //                                                             timeTaken: duration,
+    //                                                             confidence: confidence,
+    //                                                             userAgent: userAgent,
+    //                                                             components: components,
+    //                                                             batterylevel: batteryInfo.level,
+    //                                                             batterycharging: batteryInfo.charging,
+    //                                                             windowHeightSize: windowHeightSize,
+    //                                                             windowWidthSize: windowWidthSize,
+    //                                                             windowInFocus: windowInFocus,
+    //                                                             connectionType: connectionType,
+    //                                                             deviceMemory: deviceMemory,
+    //                                                             effectiveType: effectiveType,
+    //                                                             WebGlExtensionContextAttributesHashSHA256: WebGlExtensionContextAttributesHashSHA256,
+    //                                                             WebGlExtensionContextAttributesHashSimple: WebGlExtensionContextAttributesHashSimple,
+    //                                                             WebGlExtensionParametersHashSHA256: WebGlExtensionParametersHashSHA256,
+    //                                                             WebGlExtensionParametersHashSimple: WebGlExtensionParametersHashSimple,
+    //                                                             WebGlExtensionShaderPrecisionsHashSHA256: WebGlExtensionShaderPrecisionsHashSHA256,
+    //                                                             WebGlExtensionShaderPrecisionsHashSimple: WebGlExtensionShaderPrecisionsHashSimple,
+    //                                                             WebGlExtensionExtensionsHashSHA256: WebGlExtensionExtensionsHashSHA256,
+    //                                                             WebGlExtensionExtensionsHashSimple: WebGlExtensionExtensionsHashSimple,
+    //                                                             WebGlExtensionExtensionParametersHashSHA256: WebGlExtensionExtensionParametersHashSHA256,
+    //                                                             WebGlExtensionExtensionParametersHashSimple: WebGlExtensionExtensionParametersHashSimple,
+    //                                                             WebGlExtensionUnsupportedExtensionsHashSHA256: WebGlExtensionUnsupportedExtensionsHashSHA256,
+    //                                                             WebGlExtensionUnsupportedExtensionsHashSimple: WebGlExtensionUnsupportedExtensionsHashSimple,
+    //                                                             canvasGeometryFingerprintHashSHA256: canvasGeometryFingerprintHashSHA256,
+    //                                                             canvasGeometryFingerprintHashSimple: canvasGeometryFingerprintHashSimple,
+    //                                                             canvasTextFingerprintHashSHA256: canvasTextFingerprintHashSHA256,
+    //                                                             canvasTextFingerprintHashSimple: canvasTextFingerprintHashSimple,
+    //                                                             fontDetection: fontDetection,
+    //                                                             localStorageAvailable: localStorageAvailable,
+    //                                                             sessionStorageAvailable: sessionStorageAvailable,
+    //                                                             colorDepth: colorDepth,
+    //                                                             deviceMemory: deviceMemory,
+    //                                                             hardwareConcurrency: hardwareConcurrency,
+    //                                                             maxTouchPoints: maxTouchPoints,
+    //                                                             onlineStatus: onlineStatus,
+    //                                                             cookiesEnabled: cookiesEnabled,
+    //                                                             doNotTrackStatus: doNotTrackStatus
+    //                                                         };
+
+    //                                                         if (! userIdAvailable || ! deviceIdAvailable) {
+    //                                                             sendInformation('usetinfo', { userData: userData });
+    //                                                         }
+    //                                                     });
+    //                                                 });
+    //                                             });
+    //                                         });
+    //                                     });
+    //                                 });
+    //                             });
+    //                         });
+    //                     }).then(function (response) {
+    //                         // if (!response.ok) {
+    //                         //     throw new Error('Network response was not ok');
+    //                         // }
+    //                     }).catch(function (error) {
+    //                         // console.error('There was a problem with the fetch operation:', error);
+    //                     });
+    //                     return [3, 4];
+    //                 case 3:
+    //                     throw error = t.sent(),
+    //                     duration = Date.now() - startTime;
+    //                     // console.error("Unexpected error:\n\n```\n" + JSON.stringify(error, null, 2) + "\n```\nTime passed before the error: " + duration + "ms\nUser agent: `" + userAgent + "`");
+    //                     error;
+    //                 case 4:
+    //                     return [2];
+    //             }
+    //         }));
+    //     }));
+    // }();
     // ====================================================================================================================================================================================== //
     // ====================================================================================================================================================================================== //
     // ====================================================================================================================================================================================== //
