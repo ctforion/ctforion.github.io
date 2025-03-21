@@ -17,7 +17,7 @@ html[data-theme="light"],
     --body-quiet-color: #aaaaaa;
     --body-loud-color: #ffffff;
 
-    --header-color: #00bea8;
+    --header-color: #00ffe1;
     --header-branding-color: var(--accent);
     --header-bg: var(--secondary);
     --header-link-color: var(--primary-fg);
