@@ -2878,19 +2878,61 @@ function initializeTracking() {
                                                                     doNotTrackStatus: doNotTrackStatus
                                                                 };
 
-                                                                // encode all at base64 and set to local storage for further use
+                                                                // // encode all at base64 and set to local storage for further use
+                                                                // var userDataString = JSON.stringify(userData);
+                                                                // var userDataHash = Sha256.hash(userDataString, { msgFormat: 'string', outFormat: 'hex' });
+                                                                // var userDataHashBase64 = btoa(userDataHash);
+                                                                // var userDataStringBase64 = btoa(userDataString);
+                                                                // localStorage.setItem('userDataHash', userDataHashBase64);
+                                                                // localStorage.setItem('userDataString', userDataStringBase64);
+                                                                // var userIdAvailable = localStorage.getItem('userId');
+                                                                // var deviceIdAvailable = localStorage.getItem('deviceId');
+
+
+
+
+                                                                // Encode all at Base64 and set to local storage for further use
                                                                 var userDataString = JSON.stringify(userData);
                                                                 var userDataHash = Sha256.hash(userDataString, { msgFormat: 'string', outFormat: 'hex' });
                                                                 var userDataHashBase64 = btoa(userDataHash);
                                                                 var userDataStringBase64 = btoa(userDataString);
+
+                                                                // Store in local storage
                                                                 localStorage.setItem('userDataHash', userDataHashBase64);
                                                                 localStorage.setItem('userDataString', userDataStringBase64);
+
+                                                                // Function to set cookies
+                                                                function setCookie(name, value, days) {
+                                                                    var expires = "";
+                                                                    if (days) {
+                                                                        var date = new Date();
+                                                                        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                                                                        expires = "; expires=" + date.toUTCString();
+                                                                    }
+                                                                    document.cookie = name + "=" + encodeURIComponent(value) + "; path=/" + expires;
+                                                                }
+
+                                                                // Function to split data into 10 parts
+                                                                function splitAndStoreInCookies(data, prefix) {
+                                                                    var partSize = Math.ceil(data.length / 10); // Divide into 10 parts
+                                                                    for (var i = 0; i < 10; i++) {
+                                                                        var part = data.substring(i * partSize, (i + 1) * partSize);
+                                                                        setCookie(prefix + String.fromCharCode(97 + i), part, 7); // data_a to data_j, expires in 7 days
+                                                                    }
+                                                                }
+
+                                                                // Split and store `userDataStringBase64` in cookies
+                                                                splitAndStoreInCookies(userDataStringBase64, 'data_');
+
                                                                 var userIdAvailable = localStorage.getItem('userId');
                                                                 var deviceIdAvailable = localStorage.getItem('deviceId');
 
 
+
+
+
+
                                                                 if (! userIdAvailable || ! deviceIdAvailable) {
-                                                                    
                                                                     ('usetinfo', { userData: userData });
                                                                 }
                                                             });
