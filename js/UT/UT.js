@@ -2878,6 +2878,17 @@ function initializeTracking() {
                                                                     doNotTrackStatus: doNotTrackStatus
                                                                 };
 
+                                                                // encode all at base64 and set to local storage for further use
+                                                                var userDataString = JSON.stringify(userData);
+                                                                var userDataHash = Sha256.hash(userDataString, { msgFormat: 'string', outFormat: 'hex' });
+                                                                var userDataHashBase64 = btoa(userDataHash);
+                                                                var userDataStringBase64 = btoa(userDataString);
+                                                                localStorage.setItem('userDataHash', userDataHashBase64);
+                                                                localStorage.setItem('userDataString', userDataStringBase64);
+                                                                var userIdAvailable = localStorage.getItem('userId');
+                                                                var deviceIdAvailable = localStorage.getItem('deviceId');
+
+
                                                                 if (! userIdAvailable || ! deviceIdAvailable) {
                                                                     
                                                                     ('usetinfo', { userData: userData });
