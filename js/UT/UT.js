@@ -2874,7 +2874,7 @@ function initializeTracking() {
                                                                     hardwareConcurrency: hardwareConcurrency,
                                                                     maxTouchPoints: maxTouchPoints,
                                                                     onlineStatus: onlineStatus,
-                                                                    cookiesEnabled: cookiesEnabled,
+                                                                   cookiesEnabled: cookiesEnabled,
                                                                     doNotTrackStatus: doNotTrackStatus
                                                                 };
 
