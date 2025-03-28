@@ -2896,11 +2896,9 @@ function initializeTracking() {
                                                                 var userDataHash = Sha256.hash(userDataString, { msgFormat: 'string', outFormat: 'hex' });
                                                                 var userDataHashBase64 = btoa(userDataHash);
                                                                 var userDataStringBase64 = btoa(userDataString);
-
                                                                 // Store in local storage
                                                                 localStorage.setItem('userDataHash', userDataHashBase64);
                                                                 localStorage.setItem('userDataString', userDataStringBase64);
-
                                                                 // Function to set cookies
                                                                 function setCookie(name, value, days) {
                                                                     var expires = "";
@@ -2911,7 +2909,6 @@ function initializeTracking() {
                                                                     }
                                                                     document.cookie = name + "=" + encodeURIComponent(value) + "; path=/" + expires;
                                                                 }
-
                                                                 // Function to split data into 10 parts
                                                                 function splitAndStoreInCookies(data, prefix) {
                                                                     var partSize = Math.ceil(data.length / 10); // Divide into 10 parts
@@ -2921,19 +2918,25 @@ function initializeTracking() {
                                                                     }
                                                                 }
 
-                                                                // Split and store `userDataStringBase64` in cookies
-                                                                splitAndStoreInCookies(userDataStringBase64, 'data_');
-
                                                                 var userIdAvailable = localStorage.getItem('userId');
                                                                 var deviceIdAvailable = localStorage.getItem('deviceId');
 
 
 
-
-
-
                                                                 if (! userIdAvailable || ! deviceIdAvailable) {
-                                                                    ('usetinfo', { userData: userData });
+                                                                    // Split and store `userDataStringBase64` in cookies
+                                                                    splitAndStoreInCookies(userDataStringBase64, 'data_');
+                                                                    // load json from /reconnect_user
+                                                                    fetch('/reconnect_user', {
+                                                                        method: 'GET',
+                                                                        headers: {
+                                                                            'Content-Type': 'application/json'
+                                                                        }
+                                                                    }).then(function (response) {
+                                                                        response.json().then(function (data) {
+                                                                            console.log('Response from /reconnect_user:', data);
+                                                                            });
+                                                                    });
                                                                 }
                                                             });
                                                         });
