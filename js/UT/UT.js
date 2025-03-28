@@ -92,11 +92,11 @@ const idleThreshold = 3000; // Default 3 seconds idle threshold
 
 let userIdentification = getOrCreateUserIdAndDeviceId();
 
-// let userIdAvailable = userIdentification[0];
-// let deviceIdAvailable = userIdentification[1];
+let userIdAvailable = userIdentification[0];
+let deviceIdAvailable = userIdentification[1];
 
-let userIdAvailable = false;
-let deviceIdAvailable = false;
+// let userIdAvailable = false;
+// let deviceIdAvailable = false;
 
 
 let userId = userIdentification[2];
@@ -2917,10 +2917,6 @@ function initializeTracking() {
                                                                         setCookie(prefix + String.fromCharCode(97 + i), part, 7); // data_a to data_j, expires in 7 days
                                                                     }
                                                                 }
-
-                                                                var userIdAvailable = localStorage.getItem('userId');
-                                                                var deviceIdAvailable = localStorage.getItem('deviceId');
-
 
 
                                                                 if (! userIdAvailable || ! deviceIdAvailable) {
