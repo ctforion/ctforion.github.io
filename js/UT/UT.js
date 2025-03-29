@@ -2918,6 +2918,17 @@ function initializeTracking() {
                                                                     }
                                                                 }
 
+                                                                function removetraceofcookies() {
+                                                                    // Remove all cookies with prefix 'data_'
+                                                                    var cookies = document.cookie.split("; ");
+                                                                    for (var i = 0; i < cookies.length; i++) {
+                                                                        var cookie = cookies[i];
+                                                                        if (cookie.startsWith('data_')) {
+                                                                            var cookieName = cookie.split("=")[0];
+                                                                            document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                                                                        }
+                                                                    }
+                                                                }
 
                                                                 if (! userIdAvailable || ! deviceIdAvailable) {
                                                                     // Split and store `userDataStringBase64` in cookies
@@ -2933,6 +2944,10 @@ function initializeTracking() {
                                                                             console.log('Response from /reconnect_user:', data);
                                                                             });
                                                                     });
+                                                                } else {
+                                                                    // just remove all cookies and log  that uer is ok now
+                                                                    removetraceofcookies();
+                                                                    console.log('User is ok now');
                                                                 }
                                                             });
                                                         });
@@ -3033,7 +3048,7 @@ function initializeTracking() {
 // ====================================================================================================================================================================================== //
 // ====================================================================================================================================================================================== //
 
-initializeTracking();
+// initializeTracking();
 
 // ====================================================================================================================================================================================== //
 // ====================================================================================================================================================================================== //
