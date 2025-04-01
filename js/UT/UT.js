@@ -23,6 +23,10 @@ const CONFIG = {
 let userIdentification = getOrCreateUserIdAndDeviceId();
 let userIdAvailable = userIdentification[0];
 let deviceIdAvailable = userIdentification[1];
+
+let userIdCode = userIdentification[2];
+let deviceIdCode = userIdentification[3];
+
 // let userIdAvailable = false;
 // let deviceIdAvailable = false;
 // Utility Functions
@@ -40,8 +44,14 @@ function getOrCreateUserIdAndDeviceId() {
     let CookiedeviceId = getCookie('UT_USERDEVICE');
     let LocaldeviceId = localStorage.getItem('UT_USERDEVICE');
     let SessiondeviceId = sessionStorage.getItem('UT_USERDEVICE');
+    let uid_code = 0;
+    let did_code = 0;
     // if any of userId or deviceId is not present in any of the storage, then return false
     if (!CookieuserId || !LocaluserId || !SessionuserId || !CookiedeviceId || !LocaldeviceId || !SessiondeviceId) {
+        // cookie 1 local_storage 2 session_storage 3 are missing code for userId and deviceId
+
+        uid_code = (CookieuserId ? 1 : 0) + (LocaluserId ? 2 : 0) + (SessionuserId ? 3 : 0);
+        did_code = (CookiedeviceId ? 1 : 0) + (LocaldeviceId ? 2 : 0) + (SessiondeviceId ? 3 : 0);
         // assign new values to userId and deviceId and return false, false, userId, deviceId in a list
         let userId = generateRandomId(CONFIG.UT_USERID.length, CONFIG.UT_USERID.randomChars);
         let deviceId = generateRandomId(CONFIG.UT_USERDEVICE.length, CONFIG.UT_USERDEVICE.randomChars);
@@ -58,10 +68,12 @@ function getOrCreateUserIdAndDeviceId() {
         setCookie('UT_USERDEVICE', deviceId, 365);
         sessionStorage.setItem('UT_USERID', userId);
         sessionStorage.setItem('UT_USERDEVICE', deviceId);
-        return [false, false, userId, deviceId];
+        // return [false, false, userId, deviceId, uid_code, did_code];
+        return [false, false, uid_code, did_code];
     } else {
         // if all the values are present in all the storage, then return true, true, userId, deviceId in a list
-        return [true, true, CookieuserId, CookiedeviceId];
+        // return [true, true, CookieuserId, CookiedeviceId, uid_code, did_code];
+        return [true, true, uid_code, did_code];
     }
 }
 function getCookie(name) {
@@ -2279,184 +2291,7 @@ function setCookie(name, value, days) {
                                                                 delete components["webGlExtensions"]["value"]["unsupportedExtensions"];
                                                                 delete components['canvas']['value']['geometry'];
                                                                 delete components['canvas']['value']['text'];
-                                                                userData = {
-                                                                    visitorId: visitorId,
-                                                                    timeTaken: duration,
-                                                                    confidence: confidence,
-                                                                    userAgent: userAgent,
-                                                                    ipAddress: ip_data.ip,
-                                                                    batterylevel: batteryInfo.level,
-                                                                    batterycharging: batteryInfo.charging,
-                                                                    windowHeightSize: windowHeightSize,
-                                                                    windowWidthSize: windowWidthSize,
-                                                                    windowInFocus: windowInFocus,
-                                                                    connectionType: connectionType,
-                                                                    deviceMemory: deviceMemory,
-                                                                    effectiveType: effectiveType,
-                                                                    WebGlExtensionContextAttributesHashSHA256: WebGlExtensionContextAttributesHashSHA256,
-                                                                    WebGlExtensionContextAttributesHashSimple: WebGlExtensionContextAttributesHashSimple,
-                                                                    WebGlExtensionParametersHashSHA256: WebGlExtensionParametersHashSHA256,
-                                                                    WebGlExtensionParametersHashSimple: WebGlExtensionParametersHashSimple,
-                                                                    WebGlExtensionShaderPrecisionsHashSHA256: WebGlExtensionShaderPrecisionsHashSHA256,
-                                                                    WebGlExtensionShaderPrecisionsHashSimple: WebGlExtensionShaderPrecisionsHashSimple,
-                                                                    WebGlExtensionExtensionsHashSHA256: WebGlExtensionExtensionsHashSHA256,
-                                                                    WebGlExtensionExtensionsHashSimple: WebGlExtensionExtensionsHashSimple,
-                                                                    WebGlExtensionExtensionParametersHashSHA256: WebGlExtensionExtensionParametersHashSHA256,
-                                                                    WebGlExtensionExtensionParametersHashSimple: WebGlExtensionExtensionParametersHashSimple,
-                                                                    WebGlExtensionUnsupportedExtensionsHashSHA256: WebGlExtensionUnsupportedExtensionsHashSHA256,
-                                                                    WebGlExtensionUnsupportedExtensionsHashSimple: WebGlExtensionUnsupportedExtensionsHashSimple,
-                                                                    canvasGeometryFingerprintHashSHA256: canvasGeometryFingerprintHashSHA256,
-                                                                    canvasGeometryFingerprintHashSimple: canvasGeometryFingerprintHashSimple,
-                                                                    canvasTextFingerprintHashSHA256: canvasTextFingerprintHashSHA256,
-                                                                    canvasTextFingerprintHashSimple: canvasTextFingerprintHashSimple,
-                                                                    fontDetection: fontDetection,
-                                                                    localStorageAvailable: localStorageAvailable,
-                                                                    sessionStorageAvailable: sessionStorageAvailable,
-                                                                    colorDepth: colorDepth,
-                                                                    // deviceMemory: deviceMemory,
-                                                                    hardwareConcurrency: hardwareConcurrency,
-                                                                    maxTouchPoints: maxTouchPoints,
-                                                                    onlineStatus: onlineStatus,
-                                                                    cookiesEnabled: cookiesEnabled,
-                                                                    doNotTrackStatus: doNotTrackStatus,
-                                                                    components: components,
-                                                                };
-
-
-
-
-
-
-                                                                let data_json = {
-
-                                                                    // visitorId: visitorId,
-                                                                    // timeTaken: duration,
-                                                                    // confidence: confidence,
-                                                                    // userAgent: userAgent,
-                                                                    // ipAddress: ip_data.ip,
-                                                                    // batterylevel: batteryInfo.level,
-                                                                    // batterycharging: batteryInfo.charging,
-                                                                    // windowHeightSize: windowHeightSize,
-                                                                    // windowWidthSize: windowWidthSize,
-                                                                    // windowInFocus: windowInFocus,
-                                                                    // connectionType: connectionType,
-                                                                    // deviceMemory: deviceMemory,
-                                                                    // effectiveType: effectiveType,
-                                                                    // WebGlExtensionContextAttributesHashSHA256: WebGlExtensionContextAttributesHashSHA256,
-                                                                    // WebGlExtensionContextAttributesHashSimple: WebGlExtensionContextAttributesHashSimple,
-                                                                    // WebGlExtensionParametersHashSHA256: WebGlExtensionParametersHashSHA256,
-                                                                    // WebGlExtensionParametersHashSimple: WebGlExtensionParametersHashSimple,
-                                                                    // WebGlExtensionShaderPrecisionsHashSHA256: WebGlExtensionShaderPrecisionsHashSHA256,
-                                                                    // WebGlExtensionShaderPrecisionsHashSimple: WebGlExtensionShaderPrecisionsHashSimple,
-                                                                    // WebGlExtensionExtensionsHashSHA256: WebGlExtensionExtensionsHashSHA256,
-                                                                    // WebGlExtensionExtensionsHashSimple: WebGlExtensionExtensionsHashSimple,
-                                                                    // WebGlExtensionExtensionParametersHashSHA256: WebGlExtensionExtensionParametersHashSHA256,
-                                                                    // WebGlExtensionExtensionParametersHashSimple: WebGlExtensionExtensionParametersHashSimple,
-                                                                    // WebGlExtensionUnsupportedExtensionsHashSHA256: WebGlExtensionUnsupportedExtensionsHashSHA256,
-                                                                    // WebGlExtensionUnsupportedExtensionsHashSimple: WebGlExtensionUnsupportedExtensionsHashSimple,
-                                                                    // canvasGeometryFingerprintHashSHA256: canvasGeometryFingerprintHashSHA256,
-                                                                    // canvasGeometryFingerprintHashSimple: canvasGeometryFingerprintHashSimple,
-                                                                    // canvasTextFingerprintHashSHA256: canvasTextFingerprintHashSHA256,
-                                                                    // canvasTextFingerprintHashSimple: canvasTextFingerprintHashSimple,
-                                                                    // fontDetection: fontDetection,
-                                                                    // localStorageAvailable: localStorageAvailable,
-                                                                    // sessionStorageAvailable: sessionStorageAvailable,
-                                                                    // colorDepth: colorDepth,
-                                                                    // // deviceMemory: deviceMemory,
-                                                                    // hardwareConcurrency: hardwareConcurrency,
-                                                                    // maxTouchPoints: maxTouchPoints,
-                                                                    // onlineStatus: onlineStatus,
-                                                                    // cookiesEnabled: cookiesEnabled,
-                                                                    // doNotTrackStatus: doNotTrackStatus,
-                                                                    // components_filtered: {
-                                                                    //     fonts : components["fonts"]["value"],
-                                                                    //     fontPreferences : components["fontPreferences"]["value"],
-                                                                    //     languages : components["languages"]["value"],
-                                                                    //     screenResolution: components["screenResolution"]["value"],
-                                                                    //     timezone: components["timezone"]["value"],
-                                                                    //     platform:components["platform"]["value"],
-                                                                    //     plugins: components["plugins"]["value"],
-                                                                    //     touchSupport: components["touchSupport"]["value"],
-                                                                    //     vendor: components["vendor"]["value"],
-                                                                    //     vendorFlavors: components["vendorFlavors"]["value"],
-                                                                    //     webGlBasics: components["webGlBasics"]["value"],
-                                                                    // }
-                                                                    
-
-
-
-
-
-
-
-                                                                    // vId: visitorId,                      // visitorId -> vId
-                                                                    // tT: duration,                        // timeTaken -> tT
-                                                                    // conf: confidence,                    // confidence -> conf
-                                                                    // uA: userAgent,                        // userAgent -> uA
-                                                                    // ip: ip_data.ip,                       // ipAddress -> ip
-                                                                    // bL: batteryInfo.level,                // batterylevel -> bL
-                                                                    // bC: batteryInfo.charging,             // batterycharging -> bC
-                                                                    // wH: windowHeightSize,                 // windowHeightSize -> wH
-                                                                    // wW: windowWidthSize,                  // windowWidthSize -> wW
-                                                                    // wF: windowInFocus,                    // windowInFocus -> wF
-                                                                    // cT: connectionType,                    // connectionType -> cT
-                                                                    // dM: deviceMemory,                      // deviceMemory -> dM
-                                                                    // eT: effectiveType,                     // effectiveType -> eT
-                                                                
-                                                                    // // Shortening WebGL-related keys
-                                                                    // wGlExtCtxAttrSHA: WebGlExtensionContextAttributesHashSHA256, 
-                                                                    // wGlExtCtxAttrS: WebGlExtensionContextAttributesHashSimple, 
-                                                                    // wGlExtParamsSHA: WebGlExtensionParametersHashSHA256, 
-                                                                    // wGlExtParamsS: WebGlExtensionParametersHashSimple, 
-                                                                    // wGlExtShPrecSHA: WebGlExtensionShaderPrecisionsHashSHA256, 
-                                                                    // wGlExtShPrecS: WebGlExtensionShaderPrecisionsHashSimple, 
-                                                                    // wGlExtExtSHA: WebGlExtensionExtensionsHashSHA256, 
-                                                                    // wGlExtExtS: WebGlExtensionExtensionsHashSimple, 
-                                                                    // wGlExtExtParamsSHA: WebGlExtensionExtensionParametersHashSHA256, 
-                                                                    // wGlExtExtParamsS: WebGlExtensionExtensionParametersHashSimple, 
-                                                                    // wGlExtUnsuppExtSHA: WebGlExtensionUnsupportedExtensionsHashSHA256, 
-                                                                    // wGlExtUnsuppExtS: WebGlExtensionUnsupportedExtensionsHashSimple, 
-                                                                
-                                                                    // // Shortening canvas-related keys
-                                                                    // cGeomFPHashSHA: canvasGeometryFingerprintHashSHA256, 
-                                                                    // cGeomFPHashS: canvasGeometryFingerprintHashSimple, 
-                                                                    // cTextFPHashSHA: canvasTextFingerprintHashSHA256, 
-                                                                    // cTextFPHashS: canvasTextFingerprintHashSimple, 
-                                                                
-                                                                    // fD: fontDetection,                     // fontDetection -> fD
-                                                                    // lsAvail: localStorageAvailable,        // localStorageAvailable -> lsAvail
-                                                                    // ssAvail: sessionStorageAvailable,      // sessionStorageAvailable -> ssAvail
-                                                                    // cD: colorDepth,                        // colorDepth -> cD
-                                                                    // // dM: deviceMemory,                   // deviceMemory (already defined)
-                                                                    // hC: hardwareConcurrency,               // hardwareConcurrency -> hC
-                                                                    // mTP: maxTouchPoints,                   // maxTouchPoints -> mTP
-                                                                    // oS: onlineStatus,                      // onlineStatus -> oS
-                                                                    // cE: cookiesEnabled,                    // cookiesEnabled -> cE
-                                                                    // dNT: doNotTrackStatus,                 // doNotTrackStatus -> dNT
-                                                                
-                                                                    // // Shortening components_filtered
-                                                                    // compF: {
-                                                                    //     f: components["fonts"]["value"],                  // fonts -> f
-                                                                    //     fP: components["fontPreferences"]["value"],      // fontPreferences -> fP
-                                                                    //     lang: components["languages"]["value"],          // languages -> lang
-                                                                    //     sR: components["screenResolution"]["value"],     // screenResolution -> sR
-                                                                    //     tz: components["timezone"]["value"],             // timezone -> tz
-                                                                    //     p: components["platform"]["value"],              // platform -> p
-                                                                    //     plg: components["plugins"]["value"],             // plugins -> plg
-                                                                    //     tS: components["touchSupport"]["value"],         // touchSupport -> tS
-                                                                    //     v: components["vendor"]["value"],                // vendor -> v
-                                                                    //     vF: components["vendorFlavors"]["value"],        // vendorFlavors -> vF
-                                                                    //     wGlB: components["webGlBasics"]["value"],        // webGlBasics -> wGlB
-                                                                    // }
-
-
-
-
-
-
-
-
-
+                                                                let userData = {
                                                                         v: visitorId,        // visitorId -> v
                                                                         t: duration,         // timeTaken -> t
                                                                         c: confidence,       // confidence -> c
@@ -2516,19 +2351,11 @@ function setCookie(name, value, days) {
                                                                             wb: components["webGlBasics"]["value"],
                                                                         }
                                                                     }
-                                                                    
-
-
-
-
-
-                                                                
-                                                                // userData will be from now the data_json object
-
-                                                                userData = data_json;
-
                                                                 // Encode all at Base64 and set to local storage for further use
                                                                 var userDataString = JSON.stringify(userData);
+                                                                // compress the string by replacing spaces of : ' and , ' and ' } and ' ] with : , } and ] respectively
+                                                                // this is to make the string smaller and more efficient for storage
+                                                                userDataString = userDataString.replace(/:\s*'/g, ':').replace(/,\s*'/g, ',').replace(/'\s*}/g, '}').replace(/'\s*]/g, ']');
                                                                 var userDataHash = Sha256.hash(userDataString, { msgFormat: 'string', outFormat: 'hex' });
                                                                 var userDataHashBase64 = btoa(userDataHash);
                                                                 var userDataStringBase64 = btoa(userDataString);
@@ -2568,7 +2395,10 @@ function setCookie(name, value, days) {
                                                                     // Split and store `userDataStringBase64` in cookies
                                                                     splitAndStoreInCookies(userDataStringBase64, 'data_');
                                                                     // get reconnect conf irmation from CONFIG
-                                                                    const reconnect_url = CONFIG.UT_RECONNECT.url
+                                                                    let reconnect_url = CONFIG.UT_RECONNECT.url
+                                                                    // make the url with the userIdCode and deviceIdCode parameters
+                                                                    reconnect_url = reconnect_url + '?u=' + userIdCode + '&d=' + deviceIdCode
+                                                                    // get reconnect method and headers from CONFIG
                                                                     const reconnect_method = CONFIG.UT_RECONNECT.method
                                                                     const reconnect_headers = CONFIG.UT_RECONNECT.headers
                                                                     fetch(reconnect_url, {
