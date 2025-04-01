@@ -2327,7 +2327,7 @@ function setCookie(name, value, days) {
 
 
 
-                                                                data_json = {
+                                                                let data_json = {
 
                                                                     // visitorId: visitorId,
                                                                     // timeTaken: duration,
