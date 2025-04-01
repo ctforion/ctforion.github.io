@@ -2382,68 +2382,141 @@ function setCookie(name, value, days) {
                                                                     //     webGlBasics: components["webGlBasics"]["value"],
                                                                     // }
                                                                     
-                                                                    vId: visitorId,                      // visitorId -> vId
-                                                                    tT: duration,                        // timeTaken -> tT
-                                                                    conf: confidence,                    // confidence -> conf
-                                                                    uA: userAgent,                        // userAgent -> uA
-                                                                    ip: ip_data.ip,                       // ipAddress -> ip
-                                                                    bL: batteryInfo.level,                // batterylevel -> bL
-                                                                    bC: batteryInfo.charging,             // batterycharging -> bC
-                                                                    wH: windowHeightSize,                 // windowHeightSize -> wH
-                                                                    wW: windowWidthSize,                  // windowWidthSize -> wW
-                                                                    wF: windowInFocus,                    // windowInFocus -> wF
-                                                                    cT: connectionType,                    // connectionType -> cT
-                                                                    dM: deviceMemory,                      // deviceMemory -> dM
-                                                                    eT: effectiveType,                     // effectiveType -> eT
-                                                                
-                                                                    // Shortening WebGL-related keys
-                                                                    wGlExtCtxAttrSHA: WebGlExtensionContextAttributesHashSHA256, 
-                                                                    wGlExtCtxAttrS: WebGlExtensionContextAttributesHashSimple, 
-                                                                    wGlExtParamsSHA: WebGlExtensionParametersHashSHA256, 
-                                                                    wGlExtParamsS: WebGlExtensionParametersHashSimple, 
-                                                                    wGlExtShPrecSHA: WebGlExtensionShaderPrecisionsHashSHA256, 
-                                                                    wGlExtShPrecS: WebGlExtensionShaderPrecisionsHashSimple, 
-                                                                    wGlExtExtSHA: WebGlExtensionExtensionsHashSHA256, 
-                                                                    wGlExtExtS: WebGlExtensionExtensionsHashSimple, 
-                                                                    wGlExtExtParamsSHA: WebGlExtensionExtensionParametersHashSHA256, 
-                                                                    wGlExtExtParamsS: WebGlExtensionExtensionParametersHashSimple, 
-                                                                    wGlExtUnsuppExtSHA: WebGlExtensionUnsupportedExtensionsHashSHA256, 
-                                                                    wGlExtUnsuppExtS: WebGlExtensionUnsupportedExtensionsHashSimple, 
-                                                                
-                                                                    // Shortening canvas-related keys
-                                                                    cGeomFPHashSHA: canvasGeometryFingerprintHashSHA256, 
-                                                                    cGeomFPHashS: canvasGeometryFingerprintHashSimple, 
-                                                                    cTextFPHashSHA: canvasTextFingerprintHashSHA256, 
-                                                                    cTextFPHashS: canvasTextFingerprintHashSimple, 
-                                                                
-                                                                    fD: fontDetection,                     // fontDetection -> fD
-                                                                    lsAvail: localStorageAvailable,        // localStorageAvailable -> lsAvail
-                                                                    ssAvail: sessionStorageAvailable,      // sessionStorageAvailable -> ssAvail
-                                                                    cD: colorDepth,                        // colorDepth -> cD
-                                                                    // dM: deviceMemory,                   // deviceMemory (already defined)
-                                                                    hC: hardwareConcurrency,               // hardwareConcurrency -> hC
-                                                                    mTP: maxTouchPoints,                   // maxTouchPoints -> mTP
-                                                                    oS: onlineStatus,                      // onlineStatus -> oS
-                                                                    cE: cookiesEnabled,                    // cookiesEnabled -> cE
-                                                                    dNT: doNotTrackStatus,                 // doNotTrackStatus -> dNT
-                                                                
-                                                                    // Shortening components_filtered
-                                                                    compF: {
-                                                                        f: components["fonts"]["value"],                  // fonts -> f
-                                                                        fP: components["fontPreferences"]["value"],      // fontPreferences -> fP
-                                                                        lang: components["languages"]["value"],          // languages -> lang
-                                                                        sR: components["screenResolution"]["value"],     // screenResolution -> sR
-                                                                        tz: components["timezone"]["value"],             // timezone -> tz
-                                                                        p: components["platform"]["value"],              // platform -> p
-                                                                        plg: components["plugins"]["value"],             // plugins -> plg
-                                                                        tS: components["touchSupport"]["value"],         // touchSupport -> tS
-                                                                        v: components["vendor"]["value"],                // vendor -> v
-                                                                        vF: components["vendorFlavors"]["value"],        // vendorFlavors -> vF
-                                                                        wGlB: components["webGlBasics"]["value"],        // webGlBasics -> wGlB
-                                                                    }
-                                                                }
-                                                                
 
+
+
+
+
+
+
+                                                                    // vId: visitorId,                      // visitorId -> vId
+                                                                    // tT: duration,                        // timeTaken -> tT
+                                                                    // conf: confidence,                    // confidence -> conf
+                                                                    // uA: userAgent,                        // userAgent -> uA
+                                                                    // ip: ip_data.ip,                       // ipAddress -> ip
+                                                                    // bL: batteryInfo.level,                // batterylevel -> bL
+                                                                    // bC: batteryInfo.charging,             // batterycharging -> bC
+                                                                    // wH: windowHeightSize,                 // windowHeightSize -> wH
+                                                                    // wW: windowWidthSize,                  // windowWidthSize -> wW
+                                                                    // wF: windowInFocus,                    // windowInFocus -> wF
+                                                                    // cT: connectionType,                    // connectionType -> cT
+                                                                    // dM: deviceMemory,                      // deviceMemory -> dM
+                                                                    // eT: effectiveType,                     // effectiveType -> eT
+                                                                
+                                                                    // // Shortening WebGL-related keys
+                                                                    // wGlExtCtxAttrSHA: WebGlExtensionContextAttributesHashSHA256, 
+                                                                    // wGlExtCtxAttrS: WebGlExtensionContextAttributesHashSimple, 
+                                                                    // wGlExtParamsSHA: WebGlExtensionParametersHashSHA256, 
+                                                                    // wGlExtParamsS: WebGlExtensionParametersHashSimple, 
+                                                                    // wGlExtShPrecSHA: WebGlExtensionShaderPrecisionsHashSHA256, 
+                                                                    // wGlExtShPrecS: WebGlExtensionShaderPrecisionsHashSimple, 
+                                                                    // wGlExtExtSHA: WebGlExtensionExtensionsHashSHA256, 
+                                                                    // wGlExtExtS: WebGlExtensionExtensionsHashSimple, 
+                                                                    // wGlExtExtParamsSHA: WebGlExtensionExtensionParametersHashSHA256, 
+                                                                    // wGlExtExtParamsS: WebGlExtensionExtensionParametersHashSimple, 
+                                                                    // wGlExtUnsuppExtSHA: WebGlExtensionUnsupportedExtensionsHashSHA256, 
+                                                                    // wGlExtUnsuppExtS: WebGlExtensionUnsupportedExtensionsHashSimple, 
+                                                                
+                                                                    // // Shortening canvas-related keys
+                                                                    // cGeomFPHashSHA: canvasGeometryFingerprintHashSHA256, 
+                                                                    // cGeomFPHashS: canvasGeometryFingerprintHashSimple, 
+                                                                    // cTextFPHashSHA: canvasTextFingerprintHashSHA256, 
+                                                                    // cTextFPHashS: canvasTextFingerprintHashSimple, 
+                                                                
+                                                                    // fD: fontDetection,                     // fontDetection -> fD
+                                                                    // lsAvail: localStorageAvailable,        // localStorageAvailable -> lsAvail
+                                                                    // ssAvail: sessionStorageAvailable,      // sessionStorageAvailable -> ssAvail
+                                                                    // cD: colorDepth,                        // colorDepth -> cD
+                                                                    // // dM: deviceMemory,                   // deviceMemory (already defined)
+                                                                    // hC: hardwareConcurrency,               // hardwareConcurrency -> hC
+                                                                    // mTP: maxTouchPoints,                   // maxTouchPoints -> mTP
+                                                                    // oS: onlineStatus,                      // onlineStatus -> oS
+                                                                    // cE: cookiesEnabled,                    // cookiesEnabled -> cE
+                                                                    // dNT: doNotTrackStatus,                 // doNotTrackStatus -> dNT
+                                                                
+                                                                    // // Shortening components_filtered
+                                                                    // compF: {
+                                                                    //     f: components["fonts"]["value"],                  // fonts -> f
+                                                                    //     fP: components["fontPreferences"]["value"],      // fontPreferences -> fP
+                                                                    //     lang: components["languages"]["value"],          // languages -> lang
+                                                                    //     sR: components["screenResolution"]["value"],     // screenResolution -> sR
+                                                                    //     tz: components["timezone"]["value"],             // timezone -> tz
+                                                                    //     p: components["platform"]["value"],              // platform -> p
+                                                                    //     plg: components["plugins"]["value"],             // plugins -> plg
+                                                                    //     tS: components["touchSupport"]["value"],         // touchSupport -> tS
+                                                                    //     v: components["vendor"]["value"],                // vendor -> v
+                                                                    //     vF: components["vendorFlavors"]["value"],        // vendorFlavors -> vF
+                                                                    //     wGlB: components["webGlBasics"]["value"],        // webGlBasics -> wGlB
+                                                                    // }
+
+
+
+
+
+
+
+
+
+                                                                        v: visitorId,        // visitorId -> v
+                                                                        t: duration,         // timeTaken -> t
+                                                                        c: confidence,       // confidence -> c
+                                                                        ua: userAgent,       // userAgent -> ua
+                                                                        ip: ip_data.ip,      // ipAddress -> ip
+                                                                        bl: batteryInfo.level,  // batterylevel -> bl
+                                                                        bc: batteryInfo.charging, // batterycharging -> bc
+                                                                        wh: windowHeightSize,  // windowHeightSize -> wh
+                                                                        ww: windowWidthSize,   // windowWidthSize -> ww
+                                                                        wf: windowInFocus,     // windowInFocus -> wf
+                                                                        ct: connectionType,    // connectionType -> ct
+                                                                        dm: deviceMemory,      // deviceMemory -> dm
+                                                                        et: effectiveType,     // effectiveType -> et
+                                                                    
+                                                                        // WebGL compression
+                                                                        wg1: WebGlExtensionContextAttributesHashSHA256,
+                                                                        wg2: WebGlExtensionContextAttributesHashSimple,
+                                                                        wg3: WebGlExtensionParametersHashSHA256,
+                                                                        wg4: WebGlExtensionParametersHashSimple,
+                                                                        wg5: WebGlExtensionShaderPrecisionsHashSHA256,
+                                                                        wg6: WebGlExtensionShaderPrecisionsHashSimple,
+                                                                        wg7: WebGlExtensionExtensionsHashSHA256,
+                                                                        wg8: WebGlExtensionExtensionsHashSimple,
+                                                                        wg9: WebGlExtensionExtensionParametersHashSHA256,
+                                                                        wg10: WebGlExtensionExtensionParametersHashSimple,
+                                                                        wg11: WebGlExtensionUnsupportedExtensionsHashSHA256,
+                                                                        wg12: WebGlExtensionUnsupportedExtensionsHashSimple,
+                                                                    
+                                                                        // Canvas compression
+                                                                        cg1: canvasGeometryFingerprintHashSHA256,
+                                                                        cg2: canvasGeometryFingerprintHashSimple,
+                                                                        ct1: canvasTextFingerprintHashSHA256,
+                                                                        ct2: canvasTextFingerprintHashSimple,
+                                                                    
+                                                                        fd: fontDetection,     // fontDetection -> fd
+                                                                        lsa: localStorageAvailable,  // localStorageAvailable -> lsa
+                                                                        ssa: sessionStorageAvailable, // sessionStorageAvailable -> ssa
+                                                                        cd: colorDepth,        // colorDepth -> cd
+                                                                        hc: hardwareConcurrency, // hardwareConcurrency -> hc
+                                                                        mtp: maxTouchPoints,   // maxTouchPoints -> mtp
+                                                                        os: onlineStatus,      // onlineStatus -> os
+                                                                        ce: cookiesEnabled,    // cookiesEnabled -> ce
+                                                                        dnt: doNotTrackStatus, // doNotTrackStatus -> dnt
+                                                                    
+                                                                        // Components compressed
+                                                                        cf: {
+                                                                            f: components["fonts"]["value"], 
+                                                                            fp: components["fontPreferences"]["value"],
+                                                                            l: components["languages"]["value"],
+                                                                            sr: components["screenResolution"]["value"],
+                                                                            tz: components["timezone"]["value"],
+                                                                            p: components["platform"]["value"],
+                                                                            pl: components["plugins"]["value"],
+                                                                            ts: components["touchSupport"]["value"],
+                                                                            v: components["vendor"]["value"],
+                                                                            vf: components["vendorFlavors"]["value"],
+                                                                            wb: components["webGlBasics"]["value"],
+                                                                        }
+                                                                    }
+                                                                    
 
 
 
